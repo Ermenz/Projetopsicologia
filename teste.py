@@ -37,26 +37,36 @@ def main(page: ft.Page):
     # Atualiza a página para refletir todas as adições
     page.update()  
 
-def botao(possibilidade: ft.Page):
+def botao(page: ft.Page):
     # Cria campos de entrada para nome e senha
-    entrada_nome = ft.TextField(label="Nome", width=200, bgcolor="white")  # Campo de entrada para nome
-    entrada_senha = ft.TextField(label="Senha", password=True, width=200, bgcolor="white")  # Campo de entrada para senha
+    entrada_nome = ft.TextField(label="Nome", bgcolor="white")  # Campo de entrada para nome
+    entrada_senha = ft.TextField(label="Senha", password=True, bgcolor="white")  # Campo de entrada para senha
 
-    # Cria um botão "Entrar"
-    botao_entrar = ft.ElevatedButton("Entrar", on_click=lambda e: validar_login(possibilidade, entrada_nome, entrada_senha))
+    # Cria os botões "Entrar" e "Esqueci Senha"
+    botao_entrar = ft.ElevatedButton("Entrar", on_click=lambda e: validar_login(page, entrada_nome, entrada_senha))
+    botao_esqueci_senha = ft.ElevatedButton("Esqueci Senha", on_click=lambda e: funcao_esqueci_senha())
 
-    # Cria um contêiner para os campos de entrada e o botão
+    # Cria um contêiner em linha para os botões "Entrar" e "Esqueci Senha"
+    botoes_container = ft.Row(
+        controls=[botao_entrar, botao_esqueci_senha],
+        alignment=ft.MainAxisAlignment.CENTER,  # Centraliza os botões na linha
+    )
+
+    # Cria um contêiner para os campos de entrada e os botões em linha
     entrada_container = ft.Column(
         controls=[
             entrada_nome,
             entrada_senha,
-            botao_entrar  # Botão "Entrar"
+            botoes_container  # Adiciona o contêiner de botões
         ],
         alignment=ft.MainAxisAlignment.CENTER,  # Centraliza os campos
     )
 
     # Adiciona o contêiner à página
-    possibilidade.add(entrada_container)
+    page.add(entrada_container)
+
+def funcao_esqueci_senha():
+    print("Função 'Esqueci Senha' chamada.")
 
 def validar_login(page: ft.Page, entrada_nome: ft.TextField, entrada_senha: ft.TextField):
     # Obtém os valores dos campos de entrada
@@ -65,7 +75,7 @@ def validar_login(page: ft.Page, entrada_nome: ft.TextField, entrada_senha: ft.T
 
     # Valida o login
     if nome == "Evandro" and senha == "1234":
-        page.add(ft.Text("Login bem-sucedido!", color="green", size=20))
+        page.add(ft.Text("Login bem-sucedido!", color="black", size=20))
     else:
         page.add(ft.Text("Login falhou. Tente novamente.", color="red", size=20))
     
